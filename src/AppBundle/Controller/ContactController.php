@@ -12,26 +12,38 @@ use AppBundle\Entity\Contact;
 use AppBundle\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class ContactFormController extends Controller
+class ContactController extends Controller
 {
     /**
      * @Route("/contactForm/new")
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         $contact = new Contact();
 
         $form = $this->createForm(ContactType::class, $contact);
 
-        return $this->render('contactForm/show.html.twig', array(
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contact);
+            $em->flush();
+
+            return $this->redirectToRoute('show');
+        }
+
+        return $this->render('contactForm/new.html.twig', array(
             'form' => $form->createView()
         ));
     }
     /**
-     * @Route("/contactForm")
+     * @Route("/contactForm",
+     *     name = "show")
      */
     public function showAction()
     {

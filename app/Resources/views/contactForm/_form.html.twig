@@ -1,0 +1,9 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.message) }}
+<button type="submit" class="btn btn-primary">OK</button>
+{{ form_end(form) }}

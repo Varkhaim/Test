@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Contact;
+use AppBundle\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactFormController extends Controller
 {
+    /**
+     * @Route("/contactForm/new")
+     */
+    public function newAction()
+    {
+        $contact = new Contact();
+
+        $form = $this->createForm(ContactType::class, $contact);
+
+        return $this->render('contactForm/show.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
     /**
      * @Route("/contactForm")
      */
